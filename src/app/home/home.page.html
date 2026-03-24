@@ -1,0 +1,52 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Velop Tracker</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Add New Entry</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Count (e.g. Words Spoken)</ion-label>
+        <ion-input type="number" [(ngModel)]="newCount" placeholder="0"></ion-input>
+      </ion-item>
+      <ion-button expand="block" (click)="addEntry()" class="ion-margin-top">
+        Save Log
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>History</ion-label>
+    </ion-list-header>
+
+<ion-item-sliding *ngFor="let log of logs">
+
+      <ion-item>
+        <ion-label>
+          <h2>{{ log.date_str }}</h2>
+          <p>Type: {{ log.activity_type }}</p>
+        </ion-label>
+        <ion-note slot="end" color="primary" style="font-size: 1.2em; font-weight: bold;">
+          {{ log.count }}
+        </ion-note>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="deleteEntry(log.id)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+
+    </ion-item-sliding>
+
+
+  </ion-list>
+
+</ion-content>

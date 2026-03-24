@@ -1,0 +1,7 @@
+{
+  "name": "the-velop",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

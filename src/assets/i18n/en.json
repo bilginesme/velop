@@ -1,0 +1,28 @@
+{
+  "HOME": {
+    "TITLE": "The Velop",
+    "SUBTITLE": "Subtitle here"
+  },
+   "MENU_SCENE": {
+    "TITLE": "The Velop",
+    "PLAY": "PLAY",
+    "SETTINGS": "SETTINGS"
+  },
+  "GAME_SCENE": {
+    "IMMUNE": "IMMUNE!"
+  },
+  "SETTINGS_SCENE": {
+    "TITLE": "SETTINGS",
+    "MAIN_MENU": "MAIN MENU",
+    "MUSIC_VOLUME": "MUSIC VOLUME",
+    "SFX_VOLUME": "SFX VOLUME" 
+  },
+  "GAME_OVER_SCENE": {
+    "TITLE_SUCCESS": "You succeded :)",
+    "TITLE_FAILURE": "Too much love.\nSorry!",
+    "SCORE": "SCORE",
+    "PLAY_AGAIN": "PLAY AGAIN",
+    "MAIN_MENU": "MAIN MENU"
+  }
+
+}
