@@ -3,26 +3,18 @@
     "TITLE": "The Velop",
     "SUBTITLE": "Subtitle here"
   },
-   "MENU_SCENE": {
-    "TITLE": "The Velop",
-    "PLAY": "PLAY",
-    "SETTINGS": "SETTINGS"
+   "MENU": {
+    "DASHBOARD": "Dashboard",
+    "TRACKER": "Tracker",
+    "MILESTONES": "Milestones",
+    "WORD_COUNT": "WordCount",
+    "NOTES": "Notes",
+    "SETTINGS": "Settings"
   },
-  "GAME_SCENE": {
-    "IMMUNE": "IMMUNE!"
-  },
-  "SETTINGS_SCENE": {
+  "PAGE_SETTINGS": {
     "TITLE": "SETTINGS",
     "MAIN_MENU": "MAIN MENU",
     "MUSIC_VOLUME": "MUSIC VOLUME",
     "SFX_VOLUME": "SFX VOLUME" 
-  },
-  "GAME_OVER_SCENE": {
-    "TITLE_SUCCESS": "You succeded :)",
-    "TITLE_FAILURE": "Too much love.\nSorry!",
-    "SCORE": "SCORE",
-    "PLAY_AGAIN": "PLAY AGAIN",
-    "MAIN_MENU": "MAIN MENU"
   }
-
 }

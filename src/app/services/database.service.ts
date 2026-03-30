@@ -62,7 +62,6 @@ export class DatabaseService {
   }
 
   // --- CRUD Methods ---
-
   // Example: addLog('2026-02-25', 'word_count', 5)
   async addLog(date: string, type: string, count: number) {
     await this.dbReady;

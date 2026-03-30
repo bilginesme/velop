@@ -26,6 +26,10 @@ const routes: Routes = [
         loadChildren: () => import('../pages/word-count/word-count.module').then(m => m.WordCountModule)
       },
       {
+        path: 'settings',
+        loadChildren: () => import('../pages/settings/settings.module').then(m => m.SettingsModule)
+      },
+      {
         // If they just go to /tabs, redirect them to the dashboard
         path: '',
         redirectTo: '/tabs/dashboard',

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../../services/database.service'; // <--- Import it
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'heatmap',
@@ -12,7 +13,9 @@ export class Heatmap implements OnInit {
   logs: any[] = []; // Variable to store our database data
   newCount: number = 0; // Variable for the input field
 
-  constructor(private db: DatabaseService) {} // <--- Inject it
+  constructor(
+    private db: DatabaseService,
+    private translate: TranslateService) {} 
 
   async ngOnInit() {
     console.log('Starting...');

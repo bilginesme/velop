@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-tabs',
@@ -8,9 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TabsPage implements OnInit {
 
-  constructor() { }
+  constructor(private translate: TranslateService) { }
 
   ngOnInit() {
+    let test = this.translate.instant('MENU.DASHBOARD');
+    console.log('translator test', test);
   }
 
 }

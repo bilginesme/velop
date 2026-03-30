@@ -4,13 +4,15 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { MilestonesRoutingModule } from './milestones-routing.module';
 import { Milestones } from './milestones';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    MilestonesRoutingModule
+    MilestonesRoutingModule,
+    TranslateModule
   ],
   declarations: [Milestones]
 })

@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
-import { HeatmapRoutingModule } from './heatmap-routing.module';
-import { Heatmap } from './heatmap';
+import { SettingsRoutingModule } from './settings-routing.module';
+import { Settings } from './settings';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
@@ -11,9 +11,9 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     FormsModule,
     IonicModule,
-    HeatmapRoutingModule,
+    SettingsRoutingModule,
     TranslateModule
   ],
-  declarations: [Heatmap]
+  declarations: [Settings]
 })
-export class HeatmapModule {}
+export class SettingsModule {}
