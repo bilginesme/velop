@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../../services/database.service'; // <--- Import it
 import { TranslateService } from '@ngx-translate/core';
+import { MilestoneCategory } from 'src/app/models/milestone-category.model';
+import { MilestoneSubcategory } from 'src/app/models/milestone-subcategory.model';
+import { MilestoneObjective } from 'src/app/models/milestone-objective.model';
+import { CategoryTreeItem } from 'src/app/models/category-tree-item-model';
+import { MilestoneService } from 'src/app/services/milestone.service';
 
 @Component({
   selector: 'milestones',
@@ -10,41 +15,75 @@ import { TranslateService } from '@ngx-translate/core';
 })
 
 export class Milestones implements OnInit {
-  logs: any[] = []; // Variable to store our database data
-  newCount: number = 0; // Variable for the input field
+  categories: MilestoneCategory[] = []; 
+  subCategories: MilestoneSubcategory[] = []; 
+  objectives: MilestoneObjective[] = []; 
+  treeData: CategoryTreeItem[] = [];
 
   constructor(
-    private db: DatabaseService,
+    private milestoneService:MilestoneService,
     private translate: TranslateService) {}
 
   async ngOnInit() {
     console.log('Starting...');
-    // Load data when the app starts
-    await this.db.dbReady;
-    this.loadLogs();
-  }
-
-  async loadLogs() {
-    console.log('Loading logs...');
-    this.logs = await this.db.getLogs();
-    console.log('Loaded logs:');
-    console.log(this.logs);
-  }
-
-  async addEntry() {
-    // 1. Get today's date (YYYY-MM-DD)
-    const today = new Date().toISOString().split('T')[0];
+    await this.milestoneService.dbReady;
     
-    // 2. Save to DB
-    await this.db.addLog(today, 'daily_count', this.newCount);
-    
-    // 3. Clear input and reload list
-    this.newCount = 0;
-    this.loadLogs();
+    await this.loadCategories();
+    await this.loadSubCategories();
+    await this.loadObjectives();
+
+    this.buildTree();
+    console.log(this.treeData);
   }
 
-  async deleteEntry(id: number) {
-    await this.db.deleteLog(id);
-    this.loadLogs(); // Reload the list to update the UI
+  async loadCategories() {
+    this.categories = await this.milestoneService.getCategories();
+  }
+
+  async loadSubCategories() {
+    this.subCategories = await this.milestoneService.getSubCategories();
+  }
+
+  async loadObjectives() {
+    this.objectives = await this.milestoneService.getObjectivesAll();
+  }
+ 
+  buildTree() {
+    console.log('Building tree structure...');
+
+    this.treeData = this.categories.map(category => {
+      
+      // 1. Find subcategories that belong to this category
+      const relatedSubCategories = this.subCategories.filter(
+        sub => sub.category_id === category.id
+      );
+
+      // 2. Map those subcategories to include their specific objectives
+      const subcategoriesWithObjectives = relatedSubCategories.map(subcat => {
+        return {
+          subcategory: subcat,
+          // Find objectives linked to this subcategory
+          objectives: this.objectives.filter(obj => obj.subcategory_id === subcat.id)
+        };
+      });
+
+      // 3. Find objectives linked directly to the category (NO subcategory)
+      const orphanObjectives = this.objectives.filter(
+        obj => obj.category_id === category.id && obj.subcategory_id === null
+      );
+
+      // 4. Assemble and return the complete CategoryTreeItem node
+      return {
+        category: category,
+        subcategories: subcategoriesWithObjectives,
+        orphanObjectives: orphanObjectives
+      };
+    });
+
+    console.log('Tree successfully built:', this.treeData);
+  }
+
+  public toggleObjective(obj:any): void {
+    
   }
 }

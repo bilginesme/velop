@@ -6,6 +6,56 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
   
-  milestones
+  
+
+
+  <ion-accordion-group>
+
+  <ion-accordion *ngFor="let catNode of treeData" [value]="catNode.category.id">
+    
+    <ion-item slot="header" color="light">
+      <ion-label class="ion-text-wrap">
+        <h2>{{ 'MILESTONE_CATEGORIES.' + catNode.category.milestone_category_key | translate }}</h2>
+      </ion-label>
+    </ion-item>
+
+    <div slot="content">
+      <ion-list>
+
+        <ng-container *ngIf="catNode.orphanObjectives.length > 0">
+          <ion-item *ngFor="let obj of catNode.orphanObjectives">
+            <ion-checkbox slot="start" (ionChange)="toggleObjective(obj)"></ion-checkbox>
+            <ion-label class="ion-text-wrap">
+               {{ 'MILESTONE_OBJECTIVES.' + obj.objective_key | translate }}
+            </ion-label>
+          </ion-item>
+        </ng-container>
+
+        <ng-container *ngIf="catNode.subcategories.length > 0">
+          <ng-container *ngFor="let subNode of catNode.subcategories">
+            
+            <ion-list-header>
+              <ion-label color="primary">
+                {{ 'MILESTONE_SUBCATEGORIES.' + subNode.subcategory.subcategory_key | translate }}
+              </ion-label>
+            </ion-list-header>
+
+            <ion-item *ngFor="let obj of subNode.objectives">
+              <ion-checkbox slot="start" (ionChange)="toggleObjective(obj)"></ion-checkbox>
+              <ion-label class="ion-text-wrap">
+                 {{ 'MILESTONE_OBJECTIVES.' + obj.objective_key | translate }}
+              </ion-label>
+            </ion-item>
+
+          </ng-container>
+        </ng-container>
+
+      </ion-list>
+    </div>
+
+  </ion-accordion>
+
+</ion-accordion-group>
+
 
 </ion-content>

@@ -16,7 +16,6 @@ export class Settings implements OnInit {
   categories: MilestoneCategory[] = []; 
   subCategories: MilestoneSubcategory[] = []; 
   objectives: MilestoneObjective[] = []; 
-  newCount: number = 0; // Variable for the input field
 
   constructor(
     private milestoneService:MilestoneService,

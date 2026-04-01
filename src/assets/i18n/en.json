@@ -16,5 +16,41 @@
     "MAIN_MENU": "MAIN MENU",
     "MUSIC_VOLUME": "MUSIC VOLUME",
     "SFX_VOLUME": "SFX VOLUME" 
+  },
+  "MILESTONE_CATEGORIES": {
+    "CAT_SOCIAL_SKILLS": "Social Skills and Social Participation",
+    "CAT_COMMUNICATION_SKILLS": "Communication Skills",
+    "CAT_COGNITIVE_SKILLS": "Cognitive Skills",
+    "CAT_MOTOR_SKILLS": "Motor Skills",
+    "CAT_SELF_CARE_SKILLS": "Self-Care Skills"
+  },
+  "MILESTONE_SUBCATEGORIES": {
+    "SUB_CAT_RECEPTIVE_LANGUAGE_SKILLS": "Receptive Language Skills",
+    "SUB_CAT_EXPRESSIVE_LANGUAGE_SKILLS": "Expressive Language Skills",
+    "SUB_CAT_GROSS_MOTOR_SKILLS": "Gross Motor Skills",
+    "SUB_CAT_FINE_MOTOR_SKILLS": "Fine Motor Skills"
+  },
+  "MILESTONE_OBJECTIVES" : {
+    "OBJ_WHEN_NIPPLE_TOUCHES_MOUTH_ABLE_TO_OPEN_MOUTH": "When the nipple touches his/her mouth, he/she is able to open his/her mouth.", 
+    "OBJ_DURING_PLAY_WITH_CHILDREN_ABLE_TO_INTERACTION_AT_TIMES": "During play with other children, he/she is able to engage in interaction at times.",
+    "OBJ_WHEN_EXPERIENCING_PROBLEM_ABLE_TO_ASK_HELP": "When experiencing a problem, he/she is able to ask for help.",
+    "OBJ_ABLE_TO_TURN_GAZE_TOWARD_SOUND": "He/She is able to turn his/her gaze toward the source of a sound.",
+    "OBJ_WHEN_PROMPTED_ABLE_TO_INDICATE_SELF": "When prompted, he/she is able to indicate himself/herself.",
+    "OBJ_ABLE_TO_FOLLOW_THREE_CONSECUTIVE_INSTRUCTIONS": "He/She is able to follow three consecutive instructions.",
+    "OBJ_ABLE_TO_VOCALIZE_TO_GAIN_ATTENTION": "He/She is able to vocalize in order to gain attention.", 
+    "OBJ_ABLE_TOCOUNT_FROM_ONE_TO_THREE": "He/She is able to count from 1 to 3.",
+    "OBJ_ABLE_TO_ASK_MEANING_OF_WORDS": "He/She is able to ask about the meaning of words.",
+    "OBJ_ABLE_TO_TRANSFER_TOY_FROM_ONE_HAND_TO_OTHER": "He/She is able to transfer a toy from one hand to the other.",
+    "OBJ_ABLE_TO_NAME_FAMILIAR_ADULTS_SHOWN_IN_PHOTOS": "He/She is able to name familiar adults shown in photographs.",
+    "OBJ_ABLE_TO_PICK_UP_SPECIFIED_NUMBER_OF_OBJECTS": "He/She is able to pick up the specified number of objects (between 1 and 5).", 
+    "OBJ_WHEN_LYING_IN_PRONE_POSITION_ABLE_TO_TURN_HEAD_RIGHT_AND_LEFT": "When lying in a prone position, he/she is able to turn his/her head to the right and left.YYY",
+    "OBJ_ABLE_TO_HOLD_FILLED_GLASS_WITH_ONE_HAND": "He/She is able to hold a filled glass with one hand.",
+    "OBJ_ABLE_TO_STAND_ON_ONE_FOOT_FOR_X_SECONDS": "He/She is able to stand on one foot for 4–8 seconds.",
+    "OBJ_ABLE_TO_BRING_BOTH_HANDS_TOGETHER": "He/She is able to bring both hands together.",
+    "OBJ_ABLE_TO_THREAD_LARGE_BEADS_ONTO_STRING": "He/She is able to thread large beads onto a string.",
+    "OBJ_ABLE_TO_CREATE_TWO_THREE_PART_SHAPES_USING_PLAYDOUGH": "He/She is able to create two- to three-part shapes using playdough.",
+    "OBJ_ABLE_TO_CONSUME_PUREED_OR_MASHED_FOODS": "He/She is able to consume pureed or mashed foods.",
+    "OBJ_ABLE_TO_POUR_WATER_FROM_A_BOTTLE_INTO_A_GLASS": "He/She is able to pour water from a bottle into a glass.",
+    "OBJ_ABLE_TO_WIPE_UP_SPILLED_LIQUIDS_USING_A_CLOTH": "He/She is able to wipe up spilled liquids using a cloth."
   }
 }
