@@ -1,43 +1,18 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="primary">
-    <ion-title>Velop - {{ 'MENU.MILESTONES' | translate }}</ion-title>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>Milestone Catalog</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="primary" (click)="confirm()">Add</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <ion-button (click)="openCatalog()" class="ion-margin-bottom">Set Milestones</ion-button>
+<ion-content>
+  <ion-accordion-group>
 
-
-
-  <div class="ion-text-center ion-padding ion-margin-top" *ngIf="objectiveLogs.length === 0">
-    <ion-icon name="list-outline" color="medium" style="font-size: 64px;"></ion-icon>
-    <h3 color="medium">No objectives set yet.</h3>
-    <p color="medium">Tap below to browse the catalog and select goals to focus on.</p>
-  </div>
-
-  <ion-list *ngIf="objectiveLogs.length > 0">
-    <ion-list-header>
-      <ion-label>Active Goals</ion-label>
-    </ion-list-header>
-
-    <ion-item *ngFor="let log of objectiveLogs">
-      
-      <ion-checkbox 
-        slot="start" 
-        [checked]="log.is_succeeded === true"
-        (ionChange)="toggleSuccess(log)">
-      </ion-checkbox>
-      
-      <ion-label class="ion-text-wrap">
-        <h2>{{ 'MILESTONE_OBJECTIVES.' + log.objective_key | translate }}</h2>
-        <p>Added {{ log.date_chosen | date:'longDate' }}</p>
-      </ion-label>
-      
-    </ion-item>
-  </ion-list>
-
-
-  <ion-accordion-group class="ion-hide">
     <ion-accordion *ngFor="let catNode of treeData" [value]="catNode.category.id">
       
       <ion-item slot="header" color="light">
@@ -53,7 +28,7 @@
             <ion-item *ngFor="let obj of catNode.orphanObjectives">
               <ion-checkbox slot="start" (ionChange)="toggleObjective(obj)"></ion-checkbox>
               <ion-label class="ion-text-wrap">
-                {{ 'MILESTONE_OBJECTIVES.' + obj.objective_key | translate }}
+                 {{ 'MILESTONE_OBJECTIVES.' + obj.objective_key | translate }}
               </ion-label>
             </ion-item>
           </ng-container>
@@ -70,7 +45,7 @@
               <ion-item *ngFor="let obj of subNode.objectives">
                 <ion-checkbox slot="start" (ionChange)="toggleObjective(obj)"></ion-checkbox>
                 <ion-label class="ion-text-wrap">
-                  {{ 'MILESTONE_OBJECTIVES.' + obj.objective_key | translate }}
+                   {{ 'MILESTONE_OBJECTIVES.' + obj.objective_key | translate }}
                 </ion-label>
               </ion-item>
 
@@ -81,6 +56,6 @@
       </div>
 
     </ion-accordion>
-  </ion-accordion-group>
 
+  </ion-accordion-group>
 </ion-content>

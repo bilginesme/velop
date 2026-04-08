@@ -4,6 +4,7 @@ import { CapacitorSQLite, SQLiteConnection, SQLiteDBConnection } from '@capacito
 import { MilestoneObjective } from '../models/milestone-objective.model';
 import { MilestoneSubcategory } from '../models/milestone-subcategory.model';
 import { MilestoneCategory } from '../models/milestone-category.model';
+import { ObjectiveLog } from '../models/objective-log';
 
 const DB_NAME = 'velop_db';
 
@@ -65,6 +66,8 @@ export class MilestoneService {
       await this.db.execute(subcategoriesSchema);
       console.log('✅ Velop milestone_subcategories Initialized!');
 
+
+
       const objectivesSchema = `
         CREATE TABLE IF NOT EXISTS milestone_objectives (
           id INTEGER PRIMARY KEY, -- Manual ID for seed data
@@ -78,12 +81,46 @@ export class MilestoneService {
       `;
       await this.db.execute(objectivesSchema);
       console.log('✅ Velop objectives Initialized!');
+
+      const childrenSchema = `
+        CREATE TABLE IF NOT EXISTS children (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          first_name TEXT NOT NULL,
+          birthdate TEXT NOT NULL -- Good to have for milestone age calculations later!
+        );
+      `;
+      await this.db.execute(childrenSchema);
+      console.log('✅ Velop children Initialized!');
+
+      // Inject a dummy child so ID '1' exists for your testing
+      const checkChild = await this.db.query('SELECT COUNT(*) as count FROM children');
+      if (checkChild?.values && checkChild.values[0].count === 0) {
+        await this.db.run(`INSERT INTO children (id, first_name, birthdate) VALUES (1, 'Test Kid', '2022-01-01')`);
+        this.saveToWeb(); // <--- Clean one-liner
+        console.log('dummy child added');
+
+      } else {
+        console.log('dummy child already exists');
+      }
+
+      const objectivesLogSchema = `CREATE TABLE IF NOT EXISTS objectives_log (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          child_id INTEGER NOT NULL,       -- To support multiple kids
+          objective_id INTEGER NOT NULL,   -- Links to the master catalog
+          date_chosen TEXT NOT NULL,       -- When the parent added it to their list
+          is_succeeded INTEGER DEFAULT 0,  -- 0 = In Progress, 1 = Succeeded
+          notes TEXT,                      -- Free text field
+          FOREIGN KEY(child_id) REFERENCES children(id) ON DELETE CASCADE,
+          FOREIGN KEY(objective_id) REFERENCES milestone_objectives(id) ON DELETE CASCADE
+        );
+      `;
+      await this.db.execute(objectivesLogSchema);
+      console.log('✅ Velop objectives log Initialized!');
     } catch (e) {
       console.error('❌ Error initializing DB:', e);
     }
   }
 
-  // Add this helper function to your database.service.ts
   public async seedCategories() {
     // Check if categories already exist so we don't insert them twice
     const checkSql = 'SELECT COUNT(*) as count FROM milestone_categories';
@@ -106,7 +143,7 @@ export class MilestoneService {
     }
   }
   
-   public async seedSubCategories() {
+  public async seedSubCategories() {
     // Check if categories already exist so we don't insert them twice
     const checkSql = 'SELECT COUNT(*) as count FROM milestone_subcategories';
     const result = await this.db.query(checkSql);
@@ -216,6 +253,50 @@ export class MilestoneService {
     
     // The Magic Cast: Tell TypeScript what this data is
     return (result?.values as MilestoneObjective[]) || [];
+  }
+
+  public async saveObjectiveLog(childId: number, selectedObjectives: MilestoneObjective[]) {
+    await this.dbReady;
+
+    // Get the exact moment the parent chose these goals
+    // This outputs standard ISO format: "2026-04-08T18:44:31.000Z"
+    const dateChosen = new Date().toISOString(); 
+
+    // Loop through the selected items and insert them one by one
+    for (const obj of selectedObjectives) {
+      const sql = `
+        INSERT INTO objectives_log 
+        (child_id, objective_id, date_chosen, is_succeeded, notes) 
+        VALUES (?, ?, ?, 0, '')
+      `;
+      
+      // We pass 0 for 'is_succeeded' because they are just starting it
+      const params = [childId, obj.id, dateChosen];
+      
+      await this.db.run(sql, params);
+    }
+
+    // Crucial: Save to the browser's IndexedDB so it survives a refresh during web testing
+    await this.saveToWeb();
+    
+    console.log(`Successfully saved ${selectedObjectives.length} objectives for Child ${childId}!`);
+  }
+
+  async getObjectiveLogs(): Promise<ObjectiveLog[]> {
+    await this.dbReady;
+    
+    // We join the log table (l) with the objectives table (o)
+    const sql = `
+      SELECT 
+        l.*, 
+        o.objective_key 
+      FROM objectives_log l
+      INNER JOIN milestone_objectives o ON l.objective_id = o.id
+      ORDER BY l.is_succeeded ASC, l.date_chosen DESC
+    `;
+    
+    const result = await this.db.query(sql);
+    return (result?.values as ObjectiveLog[]) || [];
   }
 
   // Helper to save database to disk (only needed for Web)
