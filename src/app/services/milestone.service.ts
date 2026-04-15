@@ -120,6 +120,8 @@ export class MilestoneService {
   }
 
   public async seedCategories() {
+    await this.dbReady;
+    
     // Check if categories already exist so we don't insert them twice
     const checkSql = 'SELECT COUNT(*) as count FROM milestone_categories';
     const result = await this.db.query(checkSql);
@@ -142,6 +144,8 @@ export class MilestoneService {
   }
   
   public async seedSubCategories() {
+    await this.dbReady;
+
     // Check if categories already exist so we don't insert them twice
     const checkSql = 'SELECT COUNT(*) as count FROM milestone_subcategories';
     const result = await this.db.query(checkSql);
@@ -160,6 +164,8 @@ export class MilestoneService {
   }
 
   public async seedObjectives() {
+    await this.dbReady;
+
     const checkSql = 'SELECT COUNT(*) as count FROM milestone_objectives';
     const result = await this.db.query(checkSql);
     

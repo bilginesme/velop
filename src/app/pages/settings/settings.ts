@@ -24,10 +24,9 @@ export class Settings implements OnInit {
   async ngOnInit() {
     console.log('Starting...');
     // Load data when the app starts
-    //await this.db.dbReady;
+    await this.milestoneService.dbReady;
     //this.loadLogs();
 
-    await this.milestoneService.dbReady;
     await this.milestoneService.seedCategories();
     await this.milestoneService.seedSubCategories();
     await this.milestoneService.seedObjectives();
