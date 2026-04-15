@@ -3,7 +3,12 @@
     "TITLE": "The Velop",
     "SUBTITLE": "Subtitle here"
   },
-   "MENU": {
+  "BUTTONS": {
+    "CANCEL": "Cancel",
+    "OK": "OK",
+    "DELETE": "Delete"
+  },
+  "MENU": {
     "DASHBOARD": "Dashboard",
     "TRACKER": "Tracker",
     "MILESTONES": "Milestones",
@@ -16,6 +21,18 @@
     "MAIN_MENU": "MAIN MENU",
     "MUSIC_VOLUME": "MUSIC VOLUME",
     "SFX_VOLUME": "SFX VOLUME" 
+  },
+  "DASHBOARD": {
+    "PENDING_TITLE": "Pending Objectives",
+    "RECENT_SUCCESS_TITLE": "Achieved Objectives",
+    "VIEW_ALL_MILESTONES": "View All Milestones",
+    "NO_PENDING": "No Pending Objectives",
+    "NO_RECENT": "No Recently Achieved Objectives"
+  },
+  "MILESTONES": {
+    "SET_MILESTONES": "Set Milestones",
+    "NO_OBJECTIVES": "No objectives set yet",
+    "BROWSE_CATALOG": "Tap below to browse the catalog and select goals to focus on"
   },
   "MILESTONE_CATEGORIES": {
     "CAT_SOCIAL_SKILLS": "Social Skills and Social Participation",
@@ -52,5 +69,15 @@
     "OBJ_ABLE_TO_CONSUME_PUREED_OR_MASHED_FOODS": "He/She is able to consume pureed or mashed foods.",
     "OBJ_ABLE_TO_POUR_WATER_FROM_A_BOTTLE_INTO_A_GLASS": "He/She is able to pour water from a bottle into a glass.",
     "OBJ_ABLE_TO_WIPE_UP_SPILLED_LIQUIDS_USING_A_CLOTH": "He/She is able to wipe up spilled liquids using a cloth."
+  },
+  "OBJECTIVE_CATALOG": {
+    "ALREADY_ADDED": "Already added"
+  },
+  "OBJECTIVE_DETAIL": {
+    "OBJECTIVES_TITLE": "Objectives",
+    "ADDED_ON": "Added on",
+    "ACHIEVED_ON": "Achieved on",
+    "DELETE_HEADER": "Confirm Delete",
+    "DELETE_MESSAGE": "Are you sure you want to delete this objective?"
   }
 }

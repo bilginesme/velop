@@ -4,4 +4,5 @@ export interface MilestoneObjective {
   subcategory_id: number | null;
   objective_key: string;
   objective_order: number;
+  is_already_logged?: number;
 }

@@ -6,9 +6,9 @@ import { MilestoneSubcategory } from 'src/app/models/milestone-subcategory.model
 import { MilestoneCategory } from 'src/app/models/milestone-category.model';
 
 @Component({
-  selector: 'milestones',
-  templateUrl: 'Settings.html',
-  styleUrls: ['Settings.scss'],
+  selector: 'settings',
+  templateUrl: 'settings.html',
+  styleUrls: ['settings.scss'],
   standalone: false,
 })
 

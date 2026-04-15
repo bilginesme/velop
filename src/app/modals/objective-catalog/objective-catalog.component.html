@@ -22,37 +22,55 @@
       </ion-item>
 
       <div slot="content">
-        <ion-list>
+        
 
-          <ng-container *ngIf="catNode.orphanObjectives.length > 0">
-            <ion-item *ngFor="let obj of catNode.orphanObjectives">
-              <ion-checkbox slot="start" (ionChange)="toggleObjective(obj)"></ion-checkbox>
+      <ion-list>
+        <ng-container *ngIf="catNode.orphanObjectives.length > 0">
+          <ion-item *ngFor="let obj of catNode.orphanObjectives" [disabled]="obj.is_already_logged === 1">
+            <ion-checkbox 
+              slot="start" 
+              [checked]="obj.is_already_logged === 1"
+              [disabled]="obj.is_already_logged === 1"
+              (ionChange)="toggleObjective(obj)">
+            </ion-checkbox>
+            <ion-label class="ion-text-wrap">
+              {{ 'MILESTONE_OBJECTIVES.' + obj.objective_key | translate }}
+              <ion-note *ngIf="obj.is_already_logged === 1" color="medium" class="ion-margin-start">
+                {{ 'OBJECTIVE_CATALOG.ALREADY_ADDED' | translate }}
+              </ion-note>
+            </ion-label>
+          </ion-item>
+        </ng-container>
+
+        <ng-container *ngIf="catNode.subcategories.length > 0">
+          <ng-container *ngFor="let subNode of catNode.subcategories">
+            
+            <ion-list-header>
+              <ion-label color="primary">
+                {{ 'MILESTONE_SUBCATEGORIES.' + subNode.subcategory.subcategory_key | translate }}
+              </ion-label>
+            </ion-list-header>
+
+            <ion-item *ngFor="let obj of subNode.objectives" [disabled]="obj.is_already_logged === 1">
+              <ion-checkbox 
+                slot="start" 
+                [checked]="obj.is_already_logged === 1"
+                [disabled]="obj.is_already_logged === 1"
+                (ionChange)="toggleObjective(obj)">
+              </ion-checkbox>
               <ion-label class="ion-text-wrap">
-                 {{ 'MILESTONE_OBJECTIVES.' + obj.objective_key | translate }}
+                {{ 'MILESTONE_OBJECTIVES.' + obj.objective_key | translate }}
+                <ion-note *ngIf="obj.is_already_logged === 1" color="medium" class="ion-margin-start">
+                  {{ 'OBJECTIVE_CATALOG.ALREADY_ADDED' | translate }}
+                </ion-note>
               </ion-label>
             </ion-item>
+
           </ng-container>
+        </ng-container>
+      </ion-list>
 
-          <ng-container *ngIf="catNode.subcategories.length > 0">
-            <ng-container *ngFor="let subNode of catNode.subcategories">
-              
-              <ion-list-header>
-                <ion-label color="primary">
-                  {{ 'MILESTONE_SUBCATEGORIES.' + subNode.subcategory.subcategory_key | translate }}
-                </ion-label>
-              </ion-list-header>
 
-              <ion-item *ngFor="let obj of subNode.objectives">
-                <ion-checkbox slot="start" (ionChange)="toggleObjective(obj)"></ion-checkbox>
-                <ion-label class="ion-text-wrap">
-                   {{ 'MILESTONE_OBJECTIVES.' + obj.objective_key | translate }}
-                </ion-label>
-              </ion-item>
-
-            </ng-container>
-          </ng-container>
-
-        </ion-list>
       </div>
 
     </ion-accordion>

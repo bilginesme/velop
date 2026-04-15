@@ -1,36 +1,69 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="primary">
-    <ion-title>Velop - {{ 'MENU.MILESTONES' | translate }}</ion-title>
+<ion-header [translucent]="true" class="ion-no-border custom-dashboard-header">
+  <ion-toolbar>
+    <ion-title>
+      <span class="brand-text">Velop</span> 
+      <span class="page-subtitle"> — {{ 'MENU.MILESTONES' | translate }}</span>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <ion-button (click)="openCatalog()" class="ion-margin-bottom">Set Milestones</ion-button>
-
-
+<div class="ion-text-end ion-padding-horizontal">
+  <ion-button (click)="openCatalog()" class="ion-margin-bottom" fill="clear">
+    <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+    {{ 'MILESTONES.SET_MILESTONES' | translate }}
+  </ion-button>
+</div>
 
   <div class="ion-text-center ion-padding ion-margin-top" *ngIf="objectiveLogs.length === 0">
     <ion-icon name="list-outline" color="medium" style="font-size: 64px;"></ion-icon>
-    <h3 color="medium">No objectives set yet.</h3>
-    <p color="medium">Tap below to browse the catalog and select goals to focus on.</p>
+    <h3 color="medium">{{ 'MILESTONES.NO_OBJECTIVES' | translate }}</h3>
+    <p color="medium">{{ 'MILESTONES.BROWSE_CATALOG' | translate }}</p>
+    <p>
+       <ion-button (click)="openCatalog()" class="ion-margin-bottom" fill="clear">
+        {{ 'MILESTONES.SET_MILESTONES' | translate }}
+      </ion-button>
+    </p>
   </div>
 
   <ion-list *ngIf="objectiveLogs.length > 0">
+    
     <ion-list-header>
-      <ion-label>Active Goals</ion-label>
+      <ion-label color="primary">
+        <h2 class="ion-text-uppercase ion-text-bold" style="letter-spacing: 0.05em;">
+          {{ 'OBJECTIVE_DETAIL.OBJECTIVES_TITLE' | translate }}
+        </h2>
+      </ion-label>
     </ion-list-header>
 
-    <ion-item *ngFor="let log of objectiveLogs">
+    <ion-item 
+      *ngFor="let log of objectiveLogs" 
+      button="true" 
+      detail="true" 
+      (click)="openLogModalObjectiveLog(log)"
+      class="goal-item">
       
-      <ion-checkbox 
+      <ion-icon 
         slot="start" 
-        [checked]="log.is_succeeded === true"
-        (ionChange)="toggleSuccess(log)">
-      </ion-checkbox>
+        [name]="log.is_succeeded === 1 ? 'checkmark-circle' : 'ellipse-outline'"
+        [color]="log.is_succeeded === 1 ? 'success' : 'medium'"
+        class="ion-no-margin ion-margin-end">
+      </ion-icon>
       
       <ion-label class="ion-text-wrap">
-        <h2>{{ 'MILESTONE_OBJECTIVES.' + log.objective_key | translate }}</h2>
-        <p>Added {{ log.date_chosen | date:'longDate' }}</p>
+        <h2 [class.completed-text]="log.is_succeeded === 1">
+          {{ 'MILESTONE_OBJECTIVES.' + log.objective_key | translate }}
+        </h2>
+        <p *ngIf="log.is_succeeded === 0">
+          {{ 'OBJECTIVE_DETAIL.ADDED_ON' | translate }}: {{ log.date_chosen | date:'mediumDate' }}
+        </p>
+        <p *ngIf="log.is_succeeded === 1">
+          {{ 'OBJECTIVE_DETAIL.ACHIEVED_ON' | translate }}: {{ log.date_achieved | date:'mediumDate' }}
+        </p>
+        <p *ngIf="log.notes" class="ion-text-italic">
+          <ion-icon name="document-text-outline" size="small"></ion-icon> 
+          {{ log.notes }}
+        </p>
       </ion-label>
       
     </ion-item>

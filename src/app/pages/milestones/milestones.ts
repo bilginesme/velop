@@ -6,9 +6,10 @@ import { MilestoneSubcategory } from 'src/app/models/milestone-subcategory.model
 import { MilestoneObjective } from 'src/app/models/milestone-objective.model';
 import { CategoryTreeItem } from 'src/app/models/category-tree-item-model';
 import { MilestoneService } from 'src/app/services/milestone.service';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { ObjectiveCatalogComponent } from '../../modals/objective-catalog/objective-catalog.component';
 import { ObjectiveLog } from 'src/app/models/objective-log';
+import { ObjectiveLogDetailComponent } from 'src/app/modals/objective-log-detail/objective-log-detail.component';
 
 @Component({
   selector: 'milestones',
@@ -28,12 +29,15 @@ export class Milestones implements OnInit {
   constructor(
     private milestoneService:MilestoneService,
     private translate: TranslateService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private alertCtrl: AlertController
   ) {}
 
   async ngOnInit() {
     await this.milestoneService.dbReady;
     
+    //this.milestoneService.deleteObjectiveLogsAll();
+
     await this.loadCategories();
     await this.loadSubCategories();
     await this.loadObjectives();
@@ -56,7 +60,6 @@ export class Milestones implements OnInit {
  
   async loadObjectiveLogs() {
     this.objectiveLogs = await this.milestoneService.getObjectiveLogs();
-    console.log(this.objectiveLogs);
   }
 
   buildTree() {
@@ -94,7 +97,6 @@ export class Milestones implements OnInit {
   }
 
   public toggleSuccess(log:ObjectiveLog): void {
-    console.log('toggle success', log);
   }
 
   async openCatalog() {
@@ -113,8 +115,6 @@ export class Milestones implements OnInit {
 
     // 4. Handle the returned data
     if (role === 'confirm' && data) {
-      console.log('The user selected these objectives:', data);
-      
       // TODO: Call your database service here to save 'data' into the child_progress table
 
       // Save them to the SQLite database
@@ -123,6 +123,62 @@ export class Milestones implements OnInit {
       // After saving, you will eventually want to call a method here 
       this.loadObjectiveLogs();
     } else {
+      console.log('The user canceled or closed the modal without saving.');
+    }
+  }
+
+  public async openLogModalObjectiveLog(objectiveLog: ObjectiveLog) {
+    const modal = await this.modalCtrl.create({
+      component: ObjectiveLogDetailComponent,
+      componentProps: {
+      // Key name must match the @Input() name in the destination component
+      // We use the spread operator {...log} to pass a copy, 
+      // preventing the background list from updating before the user hits 'Save'
+      objectiveLog: { ...objectiveLog } 
+    }
+    });
+
+    // 2. Show the modal on screen
+    await modal.present();
+
+    // 3. Wait for the user to click "Add" or "Cancel"
+    const { data, role } = await modal.onDidDismiss();
+
+    // 4. Handle the returned data
+    if (role === 'save' && data) {
+      // TODO: Call your database service here to save 'data' into the child_progress table
+      // Save them to the SQLite database
+      // await this.milestoneService.saveObjectiveLog(this.childID, data);
+      await this.milestoneService.updateObjectiveLog(data);
+      
+
+      // After saving, you will eventually want to call a method here 
+      this.loadObjectiveLogs();
+    } 
+    else if (role === 'delete' && data) {
+      
+      const alert = await this.alertCtrl.create({
+        header: this.translate.instant('OBJECTIVE_DETAIL.DELETE_HEADER'), 
+        message: this.translate.instant('OBJECTIVE_DETAIL.DELETE_MESSAGE'), 
+        buttons: [
+          {
+            text: this.translate.instant('BUTTONS.CANCEL'),
+            role: 'cancel'
+          },
+          {
+            text: this.translate.instant('BUTTONS.DELETE'),
+            role: 'destructive',
+            handler: async () => {
+              await this.milestoneService.deleteObjectiveLog(data.id);
+              this.loadObjectiveLogs();
+            }
+          }
+        ]
+      });
+
+      await alert.present();
+    } else {
+      console.log(role);
       console.log('The user canceled or closed the modal without saving.');
     }
   }

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../../services/database.service'; // <--- Import it
 import { TranslateService } from '@ngx-translate/core';
+import { MilestoneService } from 'src/app/services/milestone.service';
+import { ObjectiveLog } from 'src/app/models/objective-log';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'dashboard',
@@ -10,41 +13,39 @@ import { TranslateService } from '@ngx-translate/core';
 })
 
 export class Dashboard implements OnInit {
-  logs: any[] = []; // Variable to store our database data
-  newCount: number = 0; // Variable for the input field
+  pendingLogs: ObjectiveLog[] = [];
+  recentSuccessLogs: ObjectiveLog[] = [];
+  readonly historyDays = 30; // Will move to settings later
 
-  constructor(
-    private db: DatabaseService, 
-    private translate: TranslateService) {} 
-
-  async ngOnInit() {
-    console.log('Starting...');
-    // Load data when the app starts
-    await this.db.dbReady;
-    this.loadLogs();
+  constructor(private milestoneService: MilestoneService, private navCtrl: NavController) {}
+  
+  ngOnInit(): void {
+  }
+ 
+  async ionViewWillEnter() {
+    await this.loadDashboardData();
   }
 
-  async loadLogs() {
-    console.log('Loading logs...');
-    this.logs = await this.db.getLogs();
-    console.log('Loaded logs:');
-    console.log(this.logs);
-  }
-
-  async addEntry() {
-    // 1. Get today's date (YYYY-MM-DD)
-    const today = new Date().toISOString().split('T')[0];
+  async loadDashboardData() {
+    const childId = 1; // Temporary hardcode
+    const allLogs = await this.milestoneService.getObjectiveLogs();
     
-    // 2. Save to DB
-    await this.db.addLog(today, 'daily_count', this.newCount);
-    
-    // 3. Clear input and reload list
-    this.newCount = 0;
-    this.loadLogs();
+    // Filter Pending
+    this.pendingLogs = allLogs.filter(log => log.is_succeeded === 0);
+
+    // Filter Accomplished (last 30 days)
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - this.historyDays);
+
+    this.recentSuccessLogs = allLogs.filter(log => {
+      return log.is_succeeded === 1 && 
+             log.date_achieved && 
+             new Date(log.date_achieved) >= cutoffDate;
+    });
   }
 
-  async deleteEntry(id: number) {
-    await this.db.deleteLog(id);
-    this.loadLogs(); // Reload the list to update the UI
+  goToMilestones() {
+    this.navCtrl.navigateRoot('/tabs/milestones');
   }
+ 
 }

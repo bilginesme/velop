@@ -9,6 +9,7 @@ import { MilestoneCategory } from '../../models/milestone-category.model';
 import { MilestoneSubcategory } from '../../models/milestone-subcategory.model';
 import { MilestoneObjective } from '../../models/milestone-objective.model';
 import { IonHeader, IonToolbar, IonContent, IonButton, IonButtons } from "@ionic/angular/standalone";
+import { FormsModule } from '@angular/forms';
 
 // If you created a specific interface for the tree, import it here!
 // import { CategoryTreeItem } from '../../models/category-tree-item.model';
@@ -18,7 +19,7 @@ import { IonHeader, IonToolbar, IonContent, IonButton, IonButtons } from "@ionic
   templateUrl: './objective-catalog.component.html',
   styleUrls: ['./objective-catalog.component.scss'],
   standalone: true, // This tells Angular it's an island
-  imports: [IonicModule, CommonModule, TranslateModule]
+  imports: [IonicModule, CommonModule, FormsModule, TranslateModule]
 })
 
 export class ObjectiveCatalogComponent implements OnInit {
@@ -88,4 +89,6 @@ export class ObjectiveCatalogComponent implements OnInit {
   confirm() {
     return this.modalCtrl.dismiss(this.selectedObjectives, 'confirm');
   }
+
+
 }

@@ -1,11 +1,66 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="primary">
-    <ion-title>Velop - {{ 'MENU.DASHBOARD' | translate }}</ion-title>
+<ion-header [translucent]="true" class="ion-no-border custom-dashboard-header">
+  <ion-toolbar>
+    <ion-title>
+      <span class="brand-text">Velop</span> 
+      <span class="page-subtitle"> — {{ 'MENU.DASHBOARD' | translate }}</span>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
   
-  dashboard
+  <div class="dashboard-container">
+    
+    <ion-card class="vignette-card pending-bg">
+      <ion-card-header>
+        <div class="header-with-icon">
+          <ion-icon name="rocket-outline" color="warning"></ion-icon>
+          <ion-card-title>{{ 'DASHBOARD.PENDING_TITLE' | translate }}</ion-card-title>
+        </div>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list lines="none" class="ion-no-padding">
+          <ion-item *ngFor="let log of pendingLogs.slice(0, 3)" class="mini-item">
+            <ion-icon name="ellipse-outline" slot="start" size="small"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              {{ 'MILESTONE_OBJECTIVES.' + log.objective_key | translate }}
+            </ion-label>
+          </ion-item>
+          <ion-item *ngIf="pendingLogs.length === 0">
+            <ion-label color="medium">{{ 'DASHBOARD.NO_PENDING' | translate }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
 
+    <ion-card class="vignette-card success-bg">
+      <ion-card-header>
+        <div class="header-with-icon">
+          <ion-icon name="trophy-outline" color="success"></ion-icon>
+          <ion-card-title>{{ 'DASHBOARD.RECENT_SUCCESS_TITLE' | translate }}</ion-card-title>
+        </div>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list lines="none" class="ion-no-padding">
+          <ion-item *ngFor="let log of recentSuccessLogs.slice(0, 3)" class="mini-item">
+            <ion-icon name="checkmark-circle" slot="start" color="success" size="small"></ion-icon>
+            <ion-label class="ion-text-wrap">
+              {{ 'MILESTONE_OBJECTIVES.' + log.objective_key | translate }}
+            </ion-label>
+          </ion-item>
+          <ion-item *ngIf="recentSuccessLogs.length === 0">
+            <ion-label color="medium">{{ 'DASHBOARD.NO_RECENT' | translate }}</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="ion-padding-top ion-text-center">
+      <ion-button fill="clear" (click)="goToMilestones()">
+        {{ 'DASHBOARD.VIEW_ALL_MILESTONES' | translate }}
+        <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+      </ion-button>
+    </div>
+
+  </div>
 </ion-content>

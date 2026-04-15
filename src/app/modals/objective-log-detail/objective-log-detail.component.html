@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()">Close</ion-button>
+    </ion-buttons>
+    <ion-title>Goal Details</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="primary" (click)="save()">Save</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  
+  <h2 class="ion-margin-bottom">
+    {{ 'MILESTONE_OBJECTIVES.' + logData.objective_key | translate }}
+  </h2>
+
+  <ion-list inset="true">
+    
+    <ion-item>
+      <ion-toggle [(ngModel)]="isCompleted" (ionChange)="onStatusChange()">
+        Mark as Completed
+      </ion-toggle>
+    </ion-item>
+
+    <ion-item *ngIf="isCompleted">
+      <ion-label>Date Achieved</ion-label>
+      <ion-datetime-button datetime="datetime"></ion-datetime-button>
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime id="datetime" presentation="date" [(ngModel)]="logData.date_achieved"></ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </ion-item>
+
+    <ion-item>
+      <ion-textarea 
+        label="Observation Notes" 
+        labelPlacement="stacked" 
+        placeholder="How did they do? Any struggles?" 
+        [(ngModel)]="logData.notes"
+        autoGrow="true">
+      </ion-textarea>
+    </ion-item>
+    
+  </ion-list>
+
+  <ion-button expand="block" color="danger" fill="clear" class="ion-margin-top" (click)="deleteLog()">
+    <ion-icon slot="start" name="trash-outline"></ion-icon>
+    Remove from Goals
+  </ion-button>
+
+</ion-content>

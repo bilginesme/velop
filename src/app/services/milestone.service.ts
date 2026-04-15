@@ -55,7 +55,6 @@ export class MilestoneService {
           count INTEGER DEFAULT 0);`;
           
       await this.db.execute(categoriesSchema);
-      console.log('✅ Velop milestone_categories Initialized!');
 
       const subcategoriesSchema = `CREATE TABLE IF NOT EXISTS milestone_subcategories (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -64,9 +63,6 @@ export class MilestoneService {
           subcategory_order INTEGER NOT NULL,
           FOREIGN KEY(category_id) REFERENCES milestone_categories(id) ON DELETE CASCADE);`;
       await this.db.execute(subcategoriesSchema);
-      console.log('✅ Velop milestone_subcategories Initialized!');
-
-
 
       const objectivesSchema = `
         CREATE TABLE IF NOT EXISTS milestone_objectives (
@@ -80,7 +76,6 @@ export class MilestoneService {
         );
       `;
       await this.db.execute(objectivesSchema);
-      console.log('✅ Velop objectives Initialized!');
 
       const childrenSchema = `
         CREATE TABLE IF NOT EXISTS children (
@@ -90,34 +85,37 @@ export class MilestoneService {
         );
       `;
       await this.db.execute(childrenSchema);
-      console.log('✅ Velop children Initialized!');
 
       // Inject a dummy child so ID '1' exists for your testing
       const checkChild = await this.db.query('SELECT COUNT(*) as count FROM children');
       if (checkChild?.values && checkChild.values[0].count === 0) {
         await this.db.run(`INSERT INTO children (id, first_name, birthdate) VALUES (1, 'Test Kid', '2022-01-01')`);
         this.saveToWeb(); // <--- Clean one-liner
-        console.log('dummy child added');
 
       } else {
-        console.log('dummy child already exists');
       }
 
-      const objectivesLogSchema = `CREATE TABLE IF NOT EXISTS objectives_log (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          child_id INTEGER NOT NULL,       -- To support multiple kids
-          objective_id INTEGER NOT NULL,   -- Links to the master catalog
-          date_chosen TEXT NOT NULL,       -- When the parent added it to their list
-          is_succeeded INTEGER DEFAULT 0,  -- 0 = In Progress, 1 = Succeeded
-          notes TEXT,                      -- Free text field
-          FOREIGN KEY(child_id) REFERENCES children(id) ON DELETE CASCADE,
-          FOREIGN KEY(objective_id) REFERENCES milestone_objectives(id) ON DELETE CASCADE
-        );
-      `;
-      await this.db.execute(objectivesLogSchema);
-      console.log('✅ Velop objectives log Initialized!');
-    } catch (e) {
-      console.error('❌ Error initializing DB:', e);
+      // DEVELOPMENT: Use if necessary
+      //await this.db.execute(`DROP TABLE IF EXISTS objectives_log;`);
+      //console.log('objectives_log table deleted');
+      //this.saveToWeb();
+
+      const objectivesLogSchema = `
+          CREATE TABLE IF NOT EXISTS objectives_log (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            child_id INTEGER NOT NULL,
+            objective_id INTEGER NOT NULL,
+            date_chosen TEXT NOT NULL,
+            date_achieved TEXT,            
+            is_succeeded INTEGER DEFAULT 0,
+            notes TEXT,
+            FOREIGN KEY(child_id) REFERENCES children(id) ON DELETE CASCADE,
+            FOREIGN KEY(objective_id) REFERENCES milestone_objectives(id) ON DELETE CASCADE
+          );
+        `;
+        await this.db.execute(objectivesLogSchema);
+      } catch (e) {
+        console.error('❌ Error initializing DB:', e);
     }
   }
 
@@ -219,7 +217,13 @@ export class MilestoneService {
 
   async getObjectivesAll(): Promise<MilestoneObjective[]> {
     await this.dbReady;
-    const sql = `SELECT * FROM milestone_objectives ORDER BY category_id, subcategory_id, objective_order ASC`;
+    const sql = `
+      SELECT *, 
+      (SELECT COUNT(*) FROM objectives_log ol 
+      WHERE ol.objective_id = mo.id AND ol.child_id = 1) as is_already_logged
+      FROM milestone_objectives mo
+      ORDER BY objective_order ASC;
+    `;
     const result = await this.db.query(sql);
 
     return (result?.values as MilestoneObjective[]) || [];
@@ -228,6 +232,15 @@ export class MilestoneService {
   async deleteObjectivesAll() {
     await this.dbReady;
     const sql = `DELETE FROM milestone_objectives`;
+    const result = await this.db.run(sql);
+    await this.saveToWeb(); 
+    
+    return result;
+  }
+
+  async deleteObjectiveLogsAll() {
+    await this.dbReady;
+    const sql = `DELETE FROM objectives_log`;
     const result = await this.db.run(sql);
     await this.saveToWeb(); 
     
@@ -266,8 +279,8 @@ export class MilestoneService {
     for (const obj of selectedObjectives) {
       const sql = `
         INSERT INTO objectives_log 
-        (child_id, objective_id, date_chosen, is_succeeded, notes) 
-        VALUES (?, ?, ?, 0, '')
+        (child_id, objective_id, date_chosen, date_achieved, is_succeeded, notes) 
+        VALUES (?, ?, ?, ?, 0, '')
       `;
       
       // We pass 0 for 'is_succeeded' because they are just starting it
@@ -278,8 +291,6 @@ export class MilestoneService {
 
     // Crucial: Save to the browser's IndexedDB so it survives a refresh during web testing
     await this.saveToWeb();
-    
-    console.log(`Successfully saved ${selectedObjectives.length} objectives for Child ${childId}!`);
   }
 
   async getObjectiveLogs(): Promise<ObjectiveLog[]> {
@@ -299,10 +310,29 @@ export class MilestoneService {
     return (result?.values as ObjectiveLog[]) || [];
   }
 
-  // Helper to save database to disk (only needed for Web)
+  public async updateObjectiveLog(log: ObjectiveLog) {
+    await this.dbReady;
+    const sql = `
+      UPDATE objectives_log 
+      SET is_succeeded = ?, date_achieved = ?, notes = ?
+      WHERE id = ?
+    `;
+    const params = [log.is_succeeded, log.date_achieved, log.notes, log.id];
+    await this.db.run(sql, params);
+    await this.saveToWeb();
+  }
+
+  public async deleteObjectiveLog(id: number) {
+    console.log('deleting id = ' + id);
+    await this.dbReady;
+    const sql = `DELETE FROM objectives_log WHERE id = ?`;
+    await this.db.run(sql, [id]);
+    await this.saveToWeb();
+  }
+  
   private async saveToWeb() {
     if (Capacitor.getPlatform() === 'web') {
       await this.sqlite.saveToStore(DB_NAME);
     }
-  }
+  } // Helper to save database to disk (only needed for Web)
 }

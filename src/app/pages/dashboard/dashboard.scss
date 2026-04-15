@@ -25,3 +25,91 @@
 #container a {
   text-decoration: none;
 }
+
+
+// dashboard.page.scss
+
+.dashboard-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.vignette-card {
+  margin: 16px 0;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(var(--ion-color-step-200-rgb), 0.5);
+
+  &.pending-bg {
+    background: linear-gradient(to bottom right, #ffffff, #fffcf0);
+  }
+
+  &.success-bg {
+    background: linear-gradient(to bottom right, #ffffff, #f0fff4);
+  }
+}
+
+.header-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  ion-icon {
+    font-size: 28px;
+  }
+
+  ion-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+}
+
+.mini-item {
+  --min-height: 36px;
+  --padding-start: 0;
+  --background: transparent;
+  font-size: 0.9rem;
+
+  ion-icon {
+    margin-right: 8px;
+  }
+}
+
+.custom-dashboard-header  {
+  // Use a strong gradient to ensure visibility
+  background: linear-gradient(135deg, #9be15d 0%, #00e3ae 100%) !important;
+  
+  // This ensures the header has enough "weight"
+  min-height: 60px; 
+  display: flex;
+  align-items: flex-end;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+ 
+  ion-toolbar {
+    // Force transparency to see the header background
+    --background: transparent !important;
+    --color: #ffffff !important;
+    --border-width: 0 !important;
+    
+    // Height adjustment for the toolbar
+    height: 100%;
+  }
+
+  .brand-text {
+    font-weight: 800;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  }
+
+  .page-subtitle {
+    font-weight: 300;
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+}
+
+ 
