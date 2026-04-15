@@ -28,9 +28,9 @@ export class Settings implements OnInit {
     //this.loadLogs();
 
     await this.milestoneService.dbReady;
-    //await this.milestoneService.seedCategories();
-    //await this.milestoneService.seedSubCategories();
-    //await this.milestoneService.seedObjectives();
+    await this.milestoneService.seedCategories();
+    await this.milestoneService.seedSubCategories();
+    await this.milestoneService.seedObjectives();
     await this.milestoneService.deleteObjectivesAll();
     await this.milestoneService.seedObjectives();
     
