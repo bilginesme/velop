@@ -1,18 +1,14 @@
-import type { CapacitorConfig } from '@capacitor/cli';
+import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.bilginesme.velop',
   appName: 'the-velop',
   webDir: 'www',
-  // Add this section below
+  // Keep the plugins section; it's correct for the SQLite logic
   plugins: {
     CapacitorSQLite: {
       iosIsEncryption: false,
       iosKeychainPrefix: 'the-velop-sqlite',
-      iosBiometric: {
-        biometricAuth: false,
-        biometricTitle : "Biometric login for query"
-      }
     }
   }
 };
