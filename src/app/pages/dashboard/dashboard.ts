@@ -19,7 +19,11 @@ export class Dashboard implements OnInit {
 
   constructor(private milestoneService: MilestoneService, private navCtrl: NavController) {}
   
-  ngOnInit(): void {
+  async ngOnInit() {
+    console.log('Seeding tables ...');
+    await this.milestoneService.seedCategories();
+    await this.milestoneService.seedSubCategories();
+    await this.milestoneService.seedObjectives();
   }
  
   async ionViewWillEnter() {

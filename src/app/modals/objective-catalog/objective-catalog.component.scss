@@ -1,0 +1,52 @@
+.spiced-tree {
+  --ion-item-background: transparent;
+
+  .category-header {
+    margin-bottom: 2px;
+    border-radius: 8px;
+    
+    h2.category-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--ion-color-dark);
+    }
+    p { font-size: 0.8rem; margin: 0; }
+  }
+
+  .accordion-content {
+    background: #fdfdfd; // Very subtle light gray for inner area
+    border-left: 2px solid var(--ion-color-primary-light);
+    margin-left: 10px;
+  }
+
+  .subcategory-divider {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+  }
+
+  .objective-item {
+    --padding-start: 16px;
+    font-size: 0.95rem;
+
+    &.sub-item {
+      --padding-start: 32px; // Indent subcategory objectives
+    }
+
+    &.logged-item {
+      opacity: 0.7;
+      ion-label {
+        font-style: italic;
+        color: var(--ion-color-medium);
+      }
+    }
+  }
+
+  .v-align-middle {
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+}

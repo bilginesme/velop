@@ -11,22 +11,26 @@
 </ion-header>
 
 <ion-content>
-  <ion-accordion-group>
+<ion-accordion-group [multiple]="true" class="spiced-tree">
+  <ion-accordion *ngFor="let catNode of treeData" [value]="catNode.category.id">
+    
+    <ion-item slot="header" color="light" lines="none" class="category-header">
+      <ion-icon name="folder-open-outline" slot="start" color="primary"></ion-icon>
+      <ion-label>
+        <h2 class="category-title">
+          {{ 'MILESTONE_CATEGORIES.' + catNode.category.milestone_category_key | translate }}
+        </h2>
+        <p>{{ (catNode.orphanObjectives.length + catNode.subcategories.length) }} Items Available</p>
+      </ion-label>
+    </ion-item>
 
-    <ion-accordion *ngFor="let catNode of treeData" [value]="catNode.category.id">
-      
-      <ion-item slot="header" color="light">
-        <ion-label class="ion-text-wrap">
-          <h2>{{ 'MILESTONE_CATEGORIES.' + catNode.category.milestone_category_key | translate }}</h2>
-        </ion-label>
-      </ion-item>
-
-      <div slot="content">
+    <div slot="content" class="accordion-content">
+      <ion-list lines="full">
         
-
-      <ion-list>
         <ng-container *ngIf="catNode.orphanObjectives.length > 0">
-          <ion-item *ngFor="let obj of catNode.orphanObjectives" [disabled]="obj.is_already_logged === 1">
+          <ion-item *ngFor="let obj of catNode.orphanObjectives" 
+                    [class.logged-item]="obj.is_already_logged === 1"
+                    class="objective-item">
             <ion-checkbox 
               slot="start" 
               [checked]="obj.is_already_logged === 1"
@@ -35,45 +39,43 @@
             </ion-checkbox>
             <ion-label class="ion-text-wrap">
               {{ 'MILESTONE_OBJECTIVES.' + obj.objective_key | translate }}
-              <ion-note *ngIf="obj.is_already_logged === 1" color="medium" class="ion-margin-start">
-                {{ 'OBJECTIVE_CATALOG.ALREADY_ADDED' | translate }}
-              </ion-note>
             </ion-label>
+            <ion-badge *ngIf="obj.is_already_logged === 1" color="success" slot="end" mode="ios">
+              <ion-icon name="checkmark-done-outline"></ion-icon>
+            </ion-badge>
           </ion-item>
         </ng-container>
 
-        <ng-container *ngIf="catNode.subcategories.length > 0">
-          <ng-container *ngFor="let subNode of catNode.subcategories">
-            
-            <ion-list-header>
-              <ion-label color="primary">
-                {{ 'MILESTONE_SUBCATEGORIES.' + subNode.subcategory.subcategory_key | translate }}
-              </ion-label>
-            </ion-list-header>
+        <ng-container *ngFor="let subNode of catNode.subcategories">
+          
+          <ion-item-divider sticky color="white" class="subcategory-divider">
+            <ion-label color="secondary">
+              <ion-icon name="chevron-forward-outline" class="v-align-middle"></ion-icon>
+              {{ 'MILESTONE_SUBCATEGORIES.' + subNode.subcategory.subcategory_key | translate }}
+            </ion-label>
+          </ion-item-divider>
 
-            <ion-item *ngFor="let obj of subNode.objectives" [disabled]="obj.is_already_logged === 1">
-              <ion-checkbox 
-                slot="start" 
-                [checked]="obj.is_already_logged === 1"
-                [disabled]="obj.is_already_logged === 1"
-                (ionChange)="toggleObjective(obj)">
-              </ion-checkbox>
-              <ion-label class="ion-text-wrap">
-                {{ 'MILESTONE_OBJECTIVES.' + obj.objective_key | translate }}
-                <ion-note *ngIf="obj.is_already_logged === 1" color="medium" class="ion-margin-start">
-                  {{ 'OBJECTIVE_CATALOG.ALREADY_ADDED' | translate }}
-                </ion-note>
-              </ion-label>
-            </ion-item>
+          <ion-item *ngFor="let obj of subNode.objectives" 
+                    [class.logged-item]="obj.is_already_logged === 1"
+                    class="objective-item sub-item">
+            <ion-checkbox 
+              slot="start" 
+              [checked]="obj.is_already_logged === 1"
+              [disabled]="obj.is_already_logged === 1"
+              (ionChange)="toggleObjective(obj)">
+            </ion-checkbox>
+            <ion-label class="ion-text-wrap">
+              {{ 'MILESTONE_OBJECTIVES.' + obj.objective_key | translate }}
+            </ion-label>
+            <ion-badge *ngIf="obj.is_already_logged === 1" color="success" slot="end" mode="ios">
+              DONE
+            </ion-badge>
+          </ion-item>
 
-          </ng-container>
         </ng-container>
       </ion-list>
+    </div>
+  </ion-accordion>
+</ion-accordion-group>
 
-
-      </div>
-
-    </ion-accordion>
-
-  </ion-accordion-group>
 </ion-content>
