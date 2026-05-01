@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../../services/database.service'; // <--- Import it
 import { TranslateService } from '@ngx-translate/core';
+import { PhaserHeaderComponent } from 'src/app/game/containers/phaser-header.component';
 
 @Component({
   selector: 'heatmap',

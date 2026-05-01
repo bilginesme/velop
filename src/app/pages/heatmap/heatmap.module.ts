@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HeatmapRoutingModule } from './heatmap-routing.module';
 import { Heatmap } from './heatmap';
 import { TranslateModule } from '@ngx-translate/core';
+import { PhaserHeaderComponent } from 'src/app/game/containers/phaser-header.component';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { TranslateModule } from '@ngx-translate/core';
     FormsModule,
     IonicModule,
     HeatmapRoutingModule,
-    TranslateModule
+    TranslateModule,
+    PhaserHeaderComponent
   ],
   declarations: [Heatmap]
 })

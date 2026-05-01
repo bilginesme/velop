@@ -26,8 +26,7 @@
   text-decoration: none;
 }
 
-
-// dashboard.page.scss
+ 
 
 .dashboard-container {
   max-width: 600px;
@@ -38,24 +37,58 @@
   margin: 16px 0;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border: 1px solid rgba(var(--ion-color-step-200-rgb), 0.5);
+  /* Use a semantic border that adapts to dark/light */
+  border: 1px solid var(--ion-color-step-150);
+
+  /* Set the base card background to the theme-aware variable */
+  background: var(--ion-card-background);
 
   &.pending-bg {
-    background: linear-gradient(to bottom right, #ffffff, #fffcf0);
+    /* Instead of hardcoded white, we overlay a very faint yellow tint (5% opacity) */
+    /* This works in both light and dark modes */
+    background: linear-gradient(to bottom right, var(--ion-card-background), rgba(255, 230, 0, 0.05));
+    
+    ion-icon, ion-card-title {
+      color: var(--ion-color-warning);
+    }
   }
 
   &.success-bg {
-    background: linear-gradient(to bottom right, #ffffff, #f0fff4);
+    /* Overlay a faint green tint (5% opacity) */
+    background: linear-gradient(to bottom right, var(--ion-card-background), rgba(0, 255, 100, 0.05));
+    
+    ion-icon, ion-card-title {
+      color: var(--ion-color-success);
+    }
   }
+}
+
+/* Fix the internal items to ensure they don't have their own conflicting backgrounds */
+.mini-item {
+  --min-height: 36px;
+  --padding-start: 0;
+  /* Crucial: Ensure the item is transparent so the card gradient shows through */
+  --background: transparent !important; 
+  --color: var(--ion-text-color); /* Dynamically switches white/black text */
+  font-size: 0.9rem;
+
+  ion-icon {
+    margin-right: 8px;
+  }
+}
+
+/* Ensure the text color inside the card follows the theme */
+ion-card-title {
+  color: var(--ion-text-color);
 }
 
 .header-with-icon {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 
   ion-icon {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   ion-card-title {
@@ -71,7 +104,7 @@
   font-size: 0.9rem;
 
   ion-icon {
-    margin-right: 8px;
+    margin-right: 5px;
   }
 }
 

@@ -8,38 +8,53 @@
     h2.category-title {
       font-weight: 700;
       font-size: 1.1rem;
-      color: var(--ion-color-dark);
+      /* FIX: Use the semantic dark variable which turns white in Dark Mode */
+      color: var(--ion-text-color); 
     }
-    p { font-size: 0.8rem; margin: 0; }
+    p { 
+      font-size: 0.8rem; 
+      margin: 0; 
+      color: var(--ion-color-medium); /* Adapts automatically */
+    }
   }
 
   .accordion-content {
-    background: #fdfdfd; // Very subtle light gray for inner area
-    border-left: 2px solid var(--ion-color-primary-light);
+    /* FIX: Use a step variable. Step-50 is a very light gray in Light Mode 
+       and a very dark gray in Dark Mode. */
+    background: var(--ion-color-step-50); 
+    border-left: 2px solid var(--ion-color-primary);
     margin-left: 10px;
   }
 
   .subcategory-divider {
+    /* FIX: Ensure the divider background matches the accordion content */
+    --background: var(--ion-color-step-50);
+    --color: var(--ion-color-secondary);
     padding-top: 10px;
     padding-bottom: 10px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05rem;
+    border-bottom: 1px solid var(--ion-color-step-150);
   }
 
   .objective-item {
     --padding-start: 16px;
+    /* FIX: Ensure background is transparent to show the .accordion-content color */
+    --background: transparent; 
     font-size: 0.95rem;
+    color: var(--ion-text-color);
 
     &.sub-item {
-      --padding-start: 32px; // Indent subcategory objectives
+      --padding-start: 32px;
     }
 
     &.logged-item {
-      opacity: 0.7;
+      opacity: 0.6;
       ion-label {
         font-style: italic;
+        /* Medium color is perfect for "disabled" or "logged" items in both modes */
         color: var(--ion-color-medium);
       }
     }

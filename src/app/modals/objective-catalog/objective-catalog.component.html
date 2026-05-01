@@ -45,10 +45,10 @@
             </ion-badge>
           </ion-item>
         </ng-container>
-
+ 
         <ng-container *ngFor="let subNode of catNode.subcategories">
           
-          <ion-item-divider sticky color="white" class="subcategory-divider">
+          <ion-item-divider sticky sticky class="subcategory-divider">
             <ion-label color="secondary">
               <ion-icon name="chevron-forward-outline" class="v-align-middle"></ion-icon>
               {{ 'MILESTONE_SUBCATEGORIES.' + subNode.subcategory.subcategory_key | translate }}

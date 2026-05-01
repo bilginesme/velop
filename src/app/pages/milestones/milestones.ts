@@ -92,9 +92,7 @@ export class Milestones implements OnInit {
     });
   }
 
-  public toggleObjective(obj:any): void {
-    
-  }
+  public toggleObjective(obj:any): void { }
 
   public toggleSuccess(log:ObjectiveLog): void {
   }
